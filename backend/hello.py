@@ -1,8 +1,10 @@
 from flask import Flask, jsonify
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 CORS(app)
+
+cross_origin(supports_credentials=True)
 
 @app.route('/test')
 def test_endpoint():
