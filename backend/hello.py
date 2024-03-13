@@ -4,7 +4,12 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:admin@localhost/products'
+
+PASSWORD = 'admin'  # Use quotes for string values
+PUBLIC_IP_ADDRESS = '34.38.110.51'  # Use quotes for string values
+DBNAME = 'gcp-agrofa'
+
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://postgres:{PASSWORD}@{PUBLIC_IP_ADDRESS}/{DBNAME}'
 db = SQLAlchemy(app)
 CORS(app)
 
@@ -23,6 +28,7 @@ def test_endpoint():
     for product in all_products:
         product_data = {'id': product.id, 'productname': product.productname}
         products_list.append(product_data)
+    print(products_list)
     return jsonify(products_list)
 
 @app.route('/secondtest', methods=[('GET')])

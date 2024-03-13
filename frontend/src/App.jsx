@@ -4,14 +4,14 @@ import {
   Routes,
   Route
 } from 'react-router-dom';
-import TestComponent from './TestComponent'; // This will be our component that fetches from Flask
 import SecondTest from './SecondTest';
+import Home from './Home';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/test" element={<TestComponent />} />
+        <Route path="/test" element={<Home />} />
         <Route path="/secondtest" element={<SecondTest />} />
     </Routes>
     </Router>
