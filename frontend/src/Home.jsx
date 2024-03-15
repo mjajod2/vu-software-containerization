@@ -57,6 +57,8 @@ const handleOK = async() => {
             await fetchData();
             console.log(await response.json());
             setModalVisible(false);
+            setId("");
+            setName("");
         }
     } catch (error) {
         console.log('doesnt work')
@@ -78,6 +80,7 @@ const handleDelete = async() => {
         if (response.ok) {
             await fetchData();
             setDeleteVisible(false);
+            setId("");
         }
     } catch (error) {
         console.log('fail');
