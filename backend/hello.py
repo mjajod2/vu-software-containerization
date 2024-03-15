@@ -1,13 +1,17 @@
-from flask import Flask, jsonify
+import os
+from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
 
 
 app = Flask(__name__)
 
-PASSWORD = 'admin'  # Use quotes for string values
-PUBLIC_IP_ADDRESS = '34.38.110.51'  # Use quotes for string values
-DBNAME = 'gcp-agrofa'
+load_dotenv()
+
+PASSWORD = os.getenv('PASSWORD')
+PUBLIC_IP_ADDRESS = os.getenv('PUBLIC_IP_ADDRESS')
+DBNAME = os.getenv('DBNAME')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://postgres:{PASSWORD}@{PUBLIC_IP_ADDRESS}/{DBNAME}'
 db = SQLAlchemy(app)
@@ -21,7 +25,7 @@ class Product(db.Model):
     productname = db.Column(db.String(80), nullable=False)
 
 
-@app.route('/test')
+@app.route('/', methods=[('GET')])
 def test_endpoint():
     all_products = Product.query.all()
     products_list = []
@@ -31,9 +35,41 @@ def test_endpoint():
     print(products_list)
     return jsonify(products_list)
 
-@app.route('/secondtest', methods=[('GET')])
-def test_second_endpoint():
-    return jsonify({'success': True}), 200
+@app.route('/add', methods=[('POST')])
+def add_item():
+    try:
+        data = request.get_json()
+        print('->',data)
+        if 'id' in data and 'name' in data:
+            new_product = Product(id=data['id'], productname=data['name'])
+            print(data['name'])
+            db.session.add(new_product)
+            db.session.commit()
+            return jsonify({'success': True}), 200
+        else:
+            return jsonify({'message': 'missing data for id or productname'}), 400
+    except Exception as e:
+        print(e)
+    return jsonify({'sucess':False}), 500
+
+
+@app.route('/delete', methods=['POST'])
+def delete_product():
+    try:
+        data = request.get_json()
+        if 'id' in data:
+            product_to_delete = Product.query.filter_by(id=data['id']).first()
+            if product_to_delete:
+                db.session.delete(product_to_delete)
+                db.session.commit()
+                return jsonify({'success': True}), 200
+            else:
+                return jsonify({'message': 'Product not found'}), 404
+    except Exception as e:
+        print(e)
+        return jsonify({'success': False, 'error': str(e)}), 500
+    return jsonify({'message': 'No product id provided'}), 400
+
 
 if __name__ == '__main__':
     app.run(debug=True)
