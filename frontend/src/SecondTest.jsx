@@ -5,7 +5,7 @@ const SecondTest = () => {
 
   useEffect(() => {
     console.log('eghewhg')
-    fetch('http://localhost:5000/secondtest')
+    fetch('http://localhost:5001/secondtest')
       .then(response => response.text())  // Convert the response to text
       .then(text => setMessage(text))     // Update state with the text
       .catch(error => console.log(error)); // Log errors, if any

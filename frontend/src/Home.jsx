@@ -10,7 +10,7 @@ const [id, setId] = useState("");
 const [name, setName] = useState("");
 
 const fetchData = async () => {
-    const response = await fetch("http://127.0.0.1:5000/" , {
+    const response = await fetch("http://127.0.0.1:5001/" , {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ const onNameChange = (f) => {
 
 const handleOK = async() => {
     try {
-        const response = await fetch ("http://127.0.0.1:5000/add", {
+        const response = await fetch ("http://127.0.0.1:5001/add", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ const handleOK = async() => {
 
 const handleDelete = async() => {
     try {
-        const response = await fetch ("http://127.0.0.1:5000/delete", {
+        const response = await fetch ("http://127.0.0.1:5001/delete", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
