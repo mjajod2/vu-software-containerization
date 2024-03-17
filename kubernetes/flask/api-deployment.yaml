@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-api-deployment
+  labels:
+    app: app-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app-api
+  template:
+    metadata:
+      labels:
+        app: app-api
+    spec:
+      containers:
+        - name: api-container
+          image: tan9zj/app-api:v1
+          imagePullPolicy: Always
+          command: ["python"]
+          args: ["hello.py"]
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
