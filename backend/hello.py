@@ -13,7 +13,7 @@ PASSWORD = os.getenv('PASSWORD')
 PUBLIC_IP_ADDRESS = os.getenv('PUBLIC_IP_ADDRESS')
 DBNAME = os.getenv('DBNAME')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://postgres:{PASSWORD}@{PUBLIC_IP_ADDRESS}/{DBNAME}'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://postgres:{PASSWORD}@postgres-service/{DBNAME}'
 db = SQLAlchemy(app)
 CORS(app)
 

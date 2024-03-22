@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - env:
-          image: tan9zj/react-ui:v1
+          image: mjajod2/web-frontend:latest
           imagePullPolicy: Always
           name: web-frontend
       dnsPolicy: ClusterFirst
