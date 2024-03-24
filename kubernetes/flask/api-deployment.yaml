@@ -20,5 +20,13 @@ spec:
           imagePullPolicy: Always
           command: ["python3"]
           args: ["hello.py"]
+          env:
+          - name: PASSWORD
+            value: "admin"
+          - name: DBNAME
+            value: "gcp-agrofa"
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
       dnsPolicy: ClusterFirst
       restartPolicy: Always

@@ -13,11 +13,11 @@ PASSWORD = os.getenv('PASSWORD')
 PUBLIC_IP_ADDRESS = os.getenv('PUBLIC_IP_ADDRESS')
 DBNAME = os.getenv('DBNAME')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://postgres:{PASSWORD}@postgres-service/{DBNAME}'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://postgres:postgres@/gcp-agrofa?host=/var/run/postgresql'
 db = SQLAlchemy(app)
-CORS(app)
+#CORS(app)
 
-cross_origin(supports_credentials=True)
+#cross_origin(supports_credentials=True)
 
 class Product(db.Model):
     __tablename__ = 'products'  
@@ -70,6 +70,10 @@ def delete_product():
         return jsonify({'success': False, 'error': str(e)}), 500
     return jsonify({'message': 'No product id provided'}), 400
 
+
+@app.route('/check')
+def hello_world():
+    return jsonify(message="hello world")
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001)
