@@ -9,8 +9,10 @@ const [isDeleteModalVisible, setDeleteVisible] = useState(false);
 const [id, setId] = useState("");
 const [name, setName] = useState("");
 
+const API_BASE_URL = "http://127.0.0.1:5001";
+
 const fetchData = async () => {
-    const response = await fetch("http://104.199.40.106:5001/" , {
+    const response = await fetch(API_BASE_URL , {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -43,7 +45,7 @@ const onNameChange = (f) => {
 
 const handleOK = async() => {
     try {
-        const response = await fetch ("http://104.199.40.106:5001/add", {
+        const response = await fetch (API_BASE_URL+"/add", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -68,7 +70,7 @@ const handleOK = async() => {
 
 const handleDelete = async() => {
     try {
-        const response = await fetch ("http://104.199.40.106:5001/delete", {
+        const response = await fetch (API_BASE_URL+"/delete", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
