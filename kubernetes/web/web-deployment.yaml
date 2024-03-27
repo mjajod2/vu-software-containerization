@@ -15,10 +15,11 @@ spec:
         app: web-frontend
     spec:
       containers:
-        - env:
-          image: mjajod2/web-frontend:v8
+        - name: web-frontend
+          image: mjajod2/web-frontend:v13
           imagePullPolicy: Always
-          name: web-frontend
+          ports:
+            - containerPort: 3000
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       terminationGracePeriodSeconds: 30

@@ -13,9 +13,9 @@ PASSWORD = os.getenv('PASSWORD')
 PUBLIC_IP_ADDRESS = os.getenv('PUBLIC_IP_ADDRESS')
 DBNAME = os.getenv('DBNAME')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://postgres:admin@{PUBLIC_IP_ADDRESS}/gcp-agrofa'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://postgres:admin@34.38.110.51/gcp-agrofa'
 db = SQLAlchemy(app)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
 
 cross_origin(supports_credentials=True)
 

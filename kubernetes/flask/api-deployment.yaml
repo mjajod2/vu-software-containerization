@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: api-container
-          image: mjajod2/flask:v4
+          image: mjajod2/flask:v10
           imagePullPolicy: Always
           command: ["python3"]
           args: ["hello.py"]
