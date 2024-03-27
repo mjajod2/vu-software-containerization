@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - env:
-          image: mjajod2/web-frontend:v4
+          image: mjajod2/web-frontend:v8
           imagePullPolicy: Always
           name: web-frontend
       dnsPolicy: ClusterFirst
