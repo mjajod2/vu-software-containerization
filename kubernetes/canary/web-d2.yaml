@@ -1,25 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-frontend-deployment
+  name: web-frontend-deployment-2
   labels:
     name: web-frontend
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: web-frontend
+      version: v2.0.0
   template:
     metadata:
       labels:
         app: web-frontend
+        version: v2.0.0
     spec:
       containers:
-        - name: web-frontend
-          image: mjajod2/web-frontend:v15
+        - name: web-frontend-2
+          image: mjajod2/web-frontend:v14
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
+          env:
+          - name: VERSION
+            value: v2.0.0
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
+
