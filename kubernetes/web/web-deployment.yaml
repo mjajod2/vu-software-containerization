@@ -5,7 +5,7 @@ metadata:
   labels:
     name: web-frontend
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: web-frontend
@@ -16,10 +16,10 @@ spec:
     spec:
       containers:
         - name: web-frontend
-          image: mjajod2/web-frontend:v15
+          image: mjajod2/web-frontend:vs1
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
       dnsPolicy: ClusterFirst
       restartPolicy: Always
-      terminationGracePeriodSeconds: 30
+      terminationGracePeriodSeconds: 60

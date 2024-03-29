@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: volumes-reader-binding
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: serviceaccount-3
+  namespace: default
+roleRef:
+  kind: Role
+  name: volumes-reader
+  apiGroup: rbac.authorization.k8s.io

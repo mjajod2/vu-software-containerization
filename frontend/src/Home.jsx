@@ -9,7 +9,7 @@ const [isDeleteModalVisible, setDeleteVisible] = useState(false);
 const [id, setId] = useState("");
 const [name, setName] = useState("");
 
-const API_BASE_URL = "http://130.211.93.173:5001";
+const API_BASE_URL = "http://34.76.63.43:5001";
 
 const fetchData = async () => {
     const response = await fetch(API_BASE_URL , {
@@ -27,6 +27,8 @@ const fetchData = async () => {
         
         setData(formattedData);
         console.log(data)
+    } else {
+	    console.log('bye')
     }
 }
 
