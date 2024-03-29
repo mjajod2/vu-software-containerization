@@ -16,7 +16,6 @@ The following explains the usage of each directory:
 * `frontend`: including the source code to create the frontend page
 * `kubernetes`: including the manifests used to deploy `postgres`, `flask` and `web` on GKE
 * `rest-api-chart`: including the herm charts
-
 ## Commands 
 
 Our project is shown on GKE
@@ -72,8 +71,8 @@ Our project is shown on GKE
 
   Creating the Flask deployment and service:
 
-  `kubectl create -f ./kubernetes/flask/api-deployment.yaml
-  kubectl create -f ./kubernetes/flask/api-service.yaml`
+  `kubectl apply -f ./kubernetes/flask/api-deployment.yaml
+  kubectl apply -f ./kubernetes/flask/api-service.yaml`
 
   
 
@@ -123,15 +122,15 @@ Our project is shown on GKE
 
    For deployment rollout:
 
-  `kubectl edit deployment/rest-api`:
+  `kubectl edit deployment/web-frontend`:
 
-   Update `image: 30` to 60.
+   Update `image: 14` to 15.
 
-  The output is similar to `deployment.apps/rest-api edited`.
+  The output is similar to `deployment.apps/web-frontend edited`.
 
   To see the rollout status:
 
-  `kubectl rollout status deployment/rest-api`
+  `kubectl rollout status deployment/web-frontend`
 
   The deployment rollout can be checked by seeing the new pods created using: `kubectl get pods`
 
@@ -157,19 +156,19 @@ Our project is shown on GKE
 
   `cd rest-api-chart`
 
-  helm package humans-logger-chart`: Packages the `humans-logger-chart` helm chart.
+  `helm package  web-frontend-charts` Packages the helm chart.
 
-  `helm install hl ./humans-logger-chart-1.0.0.tgz`: Installs the application.
+  `helm install demo ./web-frontend-chart.0.1.0.tgz`: Installs the application.
 
-  `helm ls`: To show version 1.0.0 installed.
+  `helm ls`: To show version 0.1.0 installed.
 
-  `nano humans-logger-chart/Chart.yaml`: Change the version number to `2.0.0` here `version: 1.0.0`.
+  `sudo nano web-frontend-chart/Chart.yaml`: Change the version number to `2.0.0` here `version: 0.1.0`.
 
-  `helm upgrade hl ./humans-logger-chart-2.0.0.tgz`: Upgrades the application to 2.0.0.
+  `helm upgrade demo ./web-frontend-chart-2.0.0.tgz`: Upgrades the application to 2.0.0.
 
   `helm ls`: To show the upgraded 2.0.0 version.
 
-  `helm uninstall hl`: To uninstall the application.
+  `helm uninstall demo`: To uninstall the application.
 
   `helm ls`: To show the application has been uninstalled.
 
