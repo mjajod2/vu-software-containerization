@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-web-fe-to-be
+spec:
+  podSelector:
+    matchLabels:
+      app: app-api
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: web-frontend
+    ports:   
+    - protocol: TCP
+      port: 5001
