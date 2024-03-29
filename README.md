@@ -16,7 +16,8 @@ The following explains the usage of each directory:
 * `frontend`: including the source code to create the frontend page
 * `kubernetes`: including the manifests used to deploy `postgres`, `flask` and `web` on GKE
 * `rest-api-chart`: including the herm charts
-## Commands 
+
+## Commands shown in the Presentation 
 
 Our project is shown on GKE
 
@@ -36,9 +37,9 @@ Our project is shown on GKE
 
   `cd frontend` (from root directory)
 
-  `docker build -t mjajod2/web-frontend:v14`
+  `docker build -t mjajod2/web-frontend:vs2`
 
-  `docker push mjajod2/web-frontend:v14`
+  `docker push mjajod2/web-frontend:vs2`
 
 * Deploying the application on GKE
 
@@ -56,10 +57,9 @@ Our project is shown on GKE
 
   Creating the deployment, service and network policy for the postgres:
 
-  `kubectl apply -f ./kubernetes/postgres/postgres-deployment.yaml
-  kubectl apply -f ./kubernetes/postgres/postgres-service.yaml`
+  `kubectl apply -f ./kubernetes/postgres/postgres-deployment.yaml`
 
-  
+  `kubectl apply -f ./kubernetes/postgres/postgres-service.yaml`
 
   
 
@@ -94,47 +94,36 @@ Our project is shown on GKE
 
   `kubectl get pods`
 
-* Pre-requisites configuration: 
+* Scaling the stateless application: 
 
-  `kubectl describe ingress managed-cert`: Shows the load balancer used
+  `kubectl scale --replicas=3 deployment web-frontend-deployment`: Scales the web-frontend from 1 to 3 replicas.
+
+  `kubectl get pods`: To check the scaling results
+
+* Pre-requisites configuration: 
 
   `kubectl get storageclass`: Shows the storage class (Can also be seen using `kubectl get pv`).
 
-  `kubectl describe managedcertificates managed-cert`: Shows the certificate.
-
-  
-
-  
-
-* Scaling the stateless application: 
-
-  `kubectl scale --replicas=3 deployment web-frontend`: Scales the web-frontend from 1 to 3 replicas.
-
-  
-
-* Show the certificates
-
-  `kubectl get issuers -n sandbox -o wide`
-
-  
-
 * Deployment Rollout:
 
-   For deployment rollout:
+  For deployment rollout:
 
-  `kubectl edit deployment/web-frontend`:
+  `kubectl edit deployment/web-frontend-deployment`:
 
-   Update `image: 14` to 15.
+   Update `terminationGracePeriodSeconds` to 60.
 
   The output is similar to `deployment.apps/web-frontend edited`.
 
   To see the rollout status:
 
-  `kubectl rollout status deployment/web-frontend`
+  `kubectl rollout status deployment/web-frontend-deployment`
 
   The deployment rollout can be checked by seeing the new pods created using: `kubectl get pods`
 
-  cd canary
+  `cd canary`
+
+  Delete the web deployment 
+  `kubectl delete deployment web-frontend-deployment`
 
   `kubectl apply -f web-d1.yaml`
 
@@ -152,24 +141,41 @@ Our project is shown on GKE
 
   `kubectl get pods --show-labels`
 
+* `cd roles/pod-role-config`
+
+  `kubectl apply -f . ` 
+
+  `kubectl get roles`: Shows the roles.
+
+  This role can reach pods: `kubectl get pods --as=system:serviceaccount:default:serviceaccount-1`
+
+  This role cannot reach secrets`kubectl get secrets --as=system:serviceaccount:default:serviceaccount-1`
+
+* Show network policy:
+
+  `kubectl get networkpolicies`
+
 * Install, Upgrade and Uninstall the application using Helm
 
-  `cd rest-api-chart`
+  `cd helm`   Show the Charts and `cd../../../../`
 
-  `helm package  web-frontend-charts` Packages the helm chart.
+  Packages the helm chart`helm package web-frontend-chart` 
 
-  `helm install demo ./web-frontend-chart.0.1.0.tgz`: Installs the application.
+  Installs the application.`helm install demo ./web-frontend-chart-1.0.0.tgz`
 
-  `helm ls`: To show version 0.1.0 installed.
+  Upgrade the version:
 
-  `sudo nano web-frontend-chart/Chart.yaml`: Change the version number to `2.0.0` here `version: 0.1.0`.
+   Change the version number to `2.0.0` : `sudo nano web-frontend-chart/Chart.yaml`
 
-  `helm upgrade demo ./web-frontend-chart-2.0.0.tgz`: Upgrades the application to 2.0.0.
+  Packages the helm chart again:`helm package web-frontend-chart`
 
-  `helm ls`: To show the upgraded 2.0.0 version.
+   To show the current chart version: `helm ls` 
 
-  `helm uninstall demo`: To uninstall the application.
+  Upgrades the application to 2.0.0:  `helm upgrade demo ./web-frontend-chart-2.0.0.tgz`
 
-  `helm ls`: To show the application has been uninstalled.
+  To show the upgraded 2.0.0 version: `helm ls`
 
-  
+  To uninstall the application:  `helm uninstall demo`
+
+  To show the application has been uninstalled:  `helm ls`
+
